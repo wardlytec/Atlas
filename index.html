@@ -430,6 +430,129 @@
                 transform: scale(1);
             }
         }
+
+        /* 📝 Contact Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .contact-modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .contact-modal {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .modal-header p {
+            color: var(--text-dim);
+            font-size: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dim);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .modal-submit {
+            width: 100%;
+            background: var(--accent-gradient);
+            color: white;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .modal-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
     </style>
 </head>
 
@@ -459,8 +582,9 @@
                 <p>أطلس للمحاسبة: النظام الأذكى لإدارة محلات الهواتف والإلكترونيات. دقة في الحسابات، سرعة في الأداء،
                     وبساطة متناهية في التصميم.</p>
                 <div class="cta-group">
-                    <a href="#" class="btn-primary">ابدأ تجربتك المجانية</a>
-                    <a href="#" class="btn-secondary">مشاهدة ديمو</a>
+                    <a href="#pricing" class="btn-primary">ابدأ تجربتك المجانية</a>
+                    <a href="https://www.mediafire.com/file/zvmtovciqru9rmf/Atlas+System.rar/file"
+                        class="btn-secondary">تحميل</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -531,7 +655,8 @@
                         <li>قاعدة بيانات محلية (Offline)</li>
                         <li>نسخ احتياطي يدوي</li>
                     </ul>
-                    <a href="#" class="btn-secondary">ابدأ التجربة الآن</a>
+                    <a href="javascript:void(0)" onclick="openContactModal('تجربة مجانية')" class="btn-secondary">ابدأ
+                        التجربة الآن</a>
                 </div>
                 <div class="price-card">
                     <div class="price-header">
@@ -545,7 +670,8 @@
                         <li>نسخ احتياطي تلقائي</li>
                         <li>تحديثات دورية مجانية</li>
                     </ul>
-                    <a href="#" class="btn-secondary">اشترك شهرياً</a>
+                    <a href="javascript:void(0)" onclick="openContactModal('الخطة الشهرية')" class="btn-secondary">اشترك
+                        شهرياً</a>
                 </div>
                 <div class="price-card featured">
                     <div class="price-header">
@@ -559,7 +685,8 @@
                         <li>صيانة دورية لقاعدة البيانات</li>
                         <li>دعم فني للأجهزة والملحقات</li>
                     </ul>
-                    <a href="#" class="btn-primary">اشترك سنوياً ووفر</a>
+                    <a href="javascript:void(0)" onclick="openContactModal('الخطة السنوية')" class="btn-primary">اشترك
+                        سنوياً ووفر</a>
                 </div>
             </div>
         </section>
@@ -591,6 +718,106 @@
             <p class="copyright">جميع الحقوق محفوظة © 2025 أطلس لأنظمة المحاسبة والمخازن</p>
         </footer>
     </div>
+
+    <!-- 📞 Contact Modal HTML -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="contact-modal">
+            <button class="modal-close" onclick="closeContactModal()">&times;</button>
+            <div class="modal-header">
+                <h2>بيانات التواصل</h2>
+                <p>اترك بياناتك وسنقوم بالتواصل معك لتفعيل <span id="selectedPlanName"
+                        style="color: var(--primary); font-weight: 700;">الخطة</span></p>
+            </div>
+            <form id="whatsappForm" onsubmit="sendToWhatsApp(event)">
+                <div class="input-group">
+                    <label>الاسم الكامل</label>
+                    <input type="text" id="clientName" placeholder="أدخل اسمك الكريم" required>
+                </div>
+                <div class="input-group">
+                    <label>رقم الهاتف (واتساب)</label>
+                    <input type="tel" id="clientPhone" placeholder="مثال: 01012345678" required>
+                </div>
+                <button type="submit" class="modal-submit">
+                    تواصل معنا عبر واتساب 🚀
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentPlan = "";
+        const TELEGRAM_BOT_TOKEN = "8560855608:AAFOq0epGknfsCNnToLKZrSMUsywODYnYs0";
+        const TELEGRAM_CHAT_ID = "8289609318"; // تم تحديث المعرف الخاص بك
+
+        function openContactModal(planName) {
+            currentPlan = planName;
+            document.getElementById('selectedPlanName').textContent = planName;
+            const modal = document.getElementById('contactModal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 400);
+        }
+
+        function sendToTelegram(name, phone, plan) {
+            const message = `🔔 طلب جديد من صفحة الهبوط:
+👤 الاسم: ${name}
+📞 الهاتف: ${phone}
+💎 الخطة: ${plan}`;
+
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            const data = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).catch(err => console.error('Telegram Error:', err));
+        }
+
+        function sendToWhatsApp(event) {
+            event.preventDefault();
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+
+            // إرسال إشعار تلجرام في الخلفية
+            sendToTelegram(name, phone, currentPlan);
+
+            const message = `مرحباً، أنا مهتم بالاشتراك في نظام أطلس.
+الاسم: ${name}
+رقم الهاتف: ${phone}
+الخطة المختارة: ${currentPlan}`;
+
+            const encodedMessage = encodeURIComponent(message);
+            // Replace with your actual WhatsApp number
+            const whatsappNumber = "201201937252";
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            window.open(whatsappURL, '_blank');
+            closeContactModal();
+        }
+
+        // Close on clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target == modal) {
+                closeContactModal();
+            }
+        }
+    </script>
 </body>
 
 </html>
